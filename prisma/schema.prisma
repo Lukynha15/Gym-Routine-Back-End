@@ -14,6 +14,16 @@ enum Status {
   advanced
 }
 
+enum DayOfWeek {
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Saturday
+  Sunday
+}
+
 model User {
   id      String     @id @default(uuid()) @db.VarChar(36)
   name    String     @db.VarChar(255)
@@ -27,7 +37,27 @@ model User {
 model Routine {
   id      String    @id @default(uuid()) @db.VarChar(36)
   name    String
+  dayofweek DayOfWeek
   user_id String
+  workouts Workout[]
 
   user User @relation(fields: [user_id], references: [id])
+}
+
+model Workout {
+  id      String    @id @default(uuid()) @db.VarChar(36)
+  name    String
+  routine_id String
+  sets Set[]
+
+  routine Routine @relation(fields: [routine_id], references: [id])
+}
+
+model Set {
+  id      String    @id @default(uuid()) @db.VarChar(36)
+  weight  Int
+  reps    Int
+  workout_id String
+
+  workout Workout @relation(fields: [workout_id], references: [id])
 }
