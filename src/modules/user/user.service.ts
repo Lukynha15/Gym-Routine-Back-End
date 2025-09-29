@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { HashUtil } from 'src/utils/hash/hash';
 import { PrismaService } from 'src/utils/prisma';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -11,7 +12,7 @@ export class UserService {
       data: {
         name: createUserDto.name,
         email: createUserDto.email,
-        password: createUserDto.password,
+        password: await HashUtil.hashPassword(createUserDto.password),
         status: createUserDto.status,
       },
     });
